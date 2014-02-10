@@ -7,6 +7,7 @@ How To Use:
 -----------
 
 Just open your terminal and execute the script.
+
 $ bash update_resolution
 
 or 
