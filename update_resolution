@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# A workaround to fix wrong resolution on Samsung SyncMaster B1930.
+# Samsung SyncMaster B1930 has a default resolution of 1360x768 but
+# it appears in Ubuntu that the monitor is Unknown and using 1024x768
+# output mode.
+# http://bit.ly/1lyxcvH
+
+# Generate the modeline using cvt
+if hash cvt 2>/dev/null; then
+  cvt 1366 768 60
+else
+  echo "- CVT is not in your system."
+  exit
+fi
+
+if hash xrandr 2>/dev/null; then
+  # Create the new modeline (with the values from the output of cvt)
+  xrandr --newmode "1360x768_59.8"  84.75  1360 1432 1568 1776  768 771 781 798 -hsync +vsync
+
+  # Add the above created modeline:
+  xrandr --addmode VGA1 1360x768_59.8
+
+  # Set the added mode to VGA1
+  xrandr --output VGA1 --mode 1360x768_59.8
+else
+  echo "- Xrandr is not in your system."
+  exit
+fi
+
